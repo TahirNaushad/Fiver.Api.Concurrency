@@ -1,0 +1,53 @@
+{
+	"variables": [],
+	"info": {
+		"name": "API - Concurrency",
+		"_postman_id": "8e479648-57d8-0f4e-0701-5436363745dc",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:18272/movies/1",
+			"request": {
+				"url": "http://localhost:18272/movies/1",
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"description": ""
+					}
+				],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:18272/movies/1",
+			"request": {
+				"url": "http://localhost:18272/movies/1",
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					},
+					{
+						"key": "If-None-Match",
+						"value": "F12F5FFC5482453CC537392555CE9100",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 1,\n    \"title\": \"Thunderball-put\",\n    \"releaseYear\": 1965\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
