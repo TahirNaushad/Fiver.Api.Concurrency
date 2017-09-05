@@ -9,7 +9,7 @@ namespace Fiver.Api.Concurrency.Controllers
     public class MoviesController : Controller
     {
         const string ETAG = "ETag";
-        const string IF_NONE_MATCH = "If-None-Match";
+        const string MATCH_HEADER = "If-Match";
         
         [HttpGet("{id}")]
         public IActionResult Get(int id)
@@ -24,8 +24,8 @@ namespace Fiver.Api.Concurrency.Controllers
             var eTag = HashFactory.GetHash(model_from_db);
             HttpContext.Response.Headers.Add("ETag", eTag);
 
-            if (HttpContext.Request.Headers.ContainsKey(IF_NONE_MATCH) &&
-                HttpContext.Request.Headers[IF_NONE_MATCH] == eTag)
+            if (HttpContext.Request.Headers.ContainsKey(MATCH_HEADER) &&
+                HttpContext.Request.Headers[MATCH_HEADER] == eTag)
                 return new StatusCodeResult(StatusCodes.Status304NotModified);
             
             return Ok(model_from_db);
@@ -42,9 +42,10 @@ namespace Fiver.Api.Concurrency.Controllers
             };
 
             var eTag = HashFactory.GetHash(model_from_db);
+            HttpContext.Response.Headers.Add("ETag", eTag);
 
-            if (HttpContext.Request.Headers.ContainsKey(IF_NONE_MATCH) &&
-                HttpContext.Request.Headers[IF_NONE_MATCH] != eTag)
+            if (!HttpContext.Request.Headers.ContainsKey(MATCH_HEADER) ||
+                HttpContext.Request.Headers[MATCH_HEADER] != eTag)
             {
                 return new StatusCodeResult(StatusCodes.Status412PreconditionFailed);
             }
