@@ -8,7 +8,7 @@ namespace Fiver.Api.Concurrency.Controllers
     [Route("movies")]
     public class MoviesController : Controller
     {
-        const string ETAG = "ETag";
+        const string ETAG_HEADER = "ETag";
         const string MATCH_HEADER = "If-Match";
         
         [HttpGet("{id}")]
@@ -22,7 +22,7 @@ namespace Fiver.Api.Concurrency.Controllers
             };
             
             var eTag = HashFactory.GetHash(model_from_db);
-            HttpContext.Response.Headers.Add("ETag", eTag);
+            HttpContext.Response.Headers.Add(ETAG_HEADER, eTag);
 
             if (HttpContext.Request.Headers.ContainsKey(MATCH_HEADER) &&
                 HttpContext.Request.Headers[MATCH_HEADER] == eTag)
@@ -42,7 +42,7 @@ namespace Fiver.Api.Concurrency.Controllers
             };
 
             var eTag = HashFactory.GetHash(model_from_db);
-            HttpContext.Response.Headers.Add("ETag", eTag);
+            HttpContext.Response.Headers.Add(ETAG_HEADER, eTag);
 
             if (!HttpContext.Request.Headers.ContainsKey(MATCH_HEADER) ||
                 HttpContext.Request.Headers[MATCH_HEADER] != eTag)
