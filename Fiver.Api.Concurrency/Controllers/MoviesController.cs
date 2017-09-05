@@ -23,9 +23,9 @@ namespace Fiver.Api.Concurrency.Controllers
             
             var eTag = HashFactory.GetHash(model_from_db);
             HttpContext.Response.Headers.Add(ETAG_HEADER, eTag);
-
+            
             if (HttpContext.Request.Headers.ContainsKey(MATCH_HEADER) &&
-                HttpContext.Request.Headers[MATCH_HEADER] == eTag)
+                HttpContext.Request.Headers[MATCH_HEADER].RemoveQuotes() == eTag)
                 return new StatusCodeResult(StatusCodes.Status304NotModified);
             
             return Ok(model_from_db);
@@ -45,7 +45,7 @@ namespace Fiver.Api.Concurrency.Controllers
             HttpContext.Response.Headers.Add(ETAG_HEADER, eTag);
 
             if (!HttpContext.Request.Headers.ContainsKey(MATCH_HEADER) ||
-                HttpContext.Request.Headers[MATCH_HEADER] != eTag)
+                HttpContext.Request.Headers[MATCH_HEADER].RemoveQuotes() != eTag)
             {
                 return new StatusCodeResult(StatusCodes.Status412PreconditionFailed);
             }
